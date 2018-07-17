@@ -5,4 +5,4 @@
 ## To run:
 
 * npm install
-* npm run
+* npm start
