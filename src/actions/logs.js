@@ -13,15 +13,22 @@ const generateTop5 = (array) => {
   array.forEach(item => {
     let splited = item.split(' ')
     let ip = splited[0]
-    let file = splited[6]
+    let file = top5getFile(splited[6])
 
-    statIp[ip] = (parseInt(statIp[ip]) || 0) + 1
-    statFile[file] = (parseInt(statFile[file]) || 0) + 1
+    statIp[ip] = (parseInt(statIp[ip], 10) || 0) + 1
+    if(file) statFile[file] = (parseInt(statFile[file], 10) || 0) + 1
   })
   statIp = sortObject(statIp).slice(0, 5)
   statFile = sortObject(statFile).slice(0, 5)
 
   return { statIp: statIp, statFile: statFile }
+}
+
+const top5getFile = (item) => {
+  if(!item) return;
+  let splited = item.split('/')
+  let file = splited[splited.length-1].match(/^([0-9a-zA-Z_-])+.([0-9a-zA-Z_-])+$/)
+  if(file) return file.input
 }
 
 const sortObject = (obj) => {

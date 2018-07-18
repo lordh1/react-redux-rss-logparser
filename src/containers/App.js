@@ -5,12 +5,17 @@ import { fetchrss } from '../actions/rss'
 import { fetchlogs } from '../actions/logs'
 import Rss from '../components/Rss'
 import Logs from '../components/Logs'
+import '../css/App.css'
 
 class App extends Component {
   static propTypes = {
     rss: PropTypes.array.isRequired,
-    top5: PropTypes.array.isRequired,
+    top5: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired
+  }
+
+  state = {
+    activeTab: 'rss'
   }
 
   componentDidMount() {
@@ -19,15 +24,33 @@ class App extends Component {
     dispatch(fetchlogs())
   }
 
+  showRSS = () => {
+    this.setState({activeTab: 'rss'})
+  }
+
+  showLOG = () => {
+    this.setState({activeTab: 'log'})
+  }
+
   render() {
     const { rss, top5 } = this.props
+    const { activeTab } = this.state
+
+    let tab
+    if(activeTab === 'rss') {
+      tab = <Rss rss={rss} />
+    } else if(activeTab === 'log') {
+      tab = <Logs top5={top5}/>
+    }
+
     return (
-      <div>
+      <div className='Main'>
         <div>
-          <Rss rss={rss} />
+          <button onClick={this.showRSS}>RSS</button>
+          <button onClick={this.showLOG}>LOG</button>
         </div>
         <div>
-          <Logs top5={top5}/>
+          {tab}
         </div>
       </div>
     )

@@ -15,6 +15,29 @@ const sortByDate = (array) => {
   });
 }
 
+const convertDate = (array) => {
+  array.forEach((item) => {
+    let date = new Date(item.pubDate)
+    let yyyy = date.getFullYear()
+    let mm = date.getMonth() + 1
+    let dd = date.getDay()
+    let h = date.getHours()
+    let m = date.getMinutes()
+    let s = date.getSeconds()
+
+    let dateHuman = yyyy + '-' +
+                    (mm>9 ? '' : '0') + mm + '-' +
+                    (dd>9 ? '' : '0') + dd + ' ' +
+                    (h>9 ? '' : '0') + h + ':' +
+                    (m>9 ? '' : '0') + m + ':' +
+                    (s>9 ? '' : '0') + s
+
+    item.pubDate = dateHuman
+  })
+
+  return array
+}
+
 export const fetchrss = () => dispatch => {
   let header = new Headers({
     'Access-Control-Allow-Origin':'*'
@@ -28,7 +51,7 @@ export const fetchrss = () => dispatch => {
   fetch(apiUrl, sentData)
   .then(response => response.text())
   .then(xml => xml2js.parseString(xml, { explicitArray: false }, (err, result) => {
-    dispatch(receiverss(sortByDate(result.rss.channel.item)))
+    dispatch(receiverss(convertDate(sortByDate(result.rss.channel.item))))
   }))
 }
 

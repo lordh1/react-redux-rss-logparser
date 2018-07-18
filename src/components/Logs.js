@@ -3,9 +3,11 @@ import PropTypes from 'prop-types'
 
 const Logs = ({top5}) => (
   <div>
+      <h1>LOG statistics</h1>
+      <h3>Statistics for the most active client</h3>
     <table>
       <thead>
-        <th>IP</th><th>Counter</th>
+        <tr><th>Client</th><th>Number of requests</th></tr>
       </thead>
       <tbody>
       {top5.statIp.map((host, i) =>
@@ -14,9 +16,10 @@ const Logs = ({top5}) => (
       </tbody>
     </table>
 
+    <h3>Statistics for the most requested file</h3>
     <table>
       <thead>
-        <th>IP</th><th>Counter</th>
+        <tr><th>File name</th><th>Number of requests</th></tr>
       </thead>
       <tbody>
       {top5.statFile.map((file, i) =>
@@ -28,7 +31,7 @@ const Logs = ({top5}) => (
 )
 
 Logs.propTypes = {
-  logs: PropTypes.array.isRequired
+  top5: PropTypes.object.isRequired
 }
 
 export default Logs
